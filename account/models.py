@@ -8,19 +8,19 @@ class User(AbstractBaseUser):
     email = models.EmailField(
         verbose_name='آدرس ایمیل',
         max_length=255,
+        null=True,
+        blank=True,
         unique=True,
     )
+    phone = models.CharField(max_length=12, unique=True, verbose_name='شماره موبایل')
     full_name = models.CharField(max_length=50, verbose_name='نام و نام خانوادگی')
     is_active = models.BooleanField(default=True, verbose_name='فعال')
     is_admin = models.BooleanField(default=False, verbose_name='ادمین')
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = []
-
-    def __str__(self):
-        return self.email
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
