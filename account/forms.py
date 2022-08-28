@@ -8,8 +8,8 @@ from .models import User
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password1 = forms.CharField(label='گذرواژه', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='تایید گذرواژه', widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -41,11 +41,15 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('phone', 'email', 'password', 'full_name', 'is_active', 'is_admin')
+        fields = ('phone', 'password', 'is_active', 'is_admin')
 
 
-class LoginUserForm(forms.Form):
+class LoginForm(forms.Form):
+    """
+    The form used for logging users in
+    """
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                           'placeholder': 'Your Phone'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                 'placeholder': 'Your Password'}))
+                                                          'placeholder': 'Your Password'}))
+

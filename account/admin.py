@@ -5,10 +5,6 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 from .forms import UserCreationForm, UserChangeForm
 
-admin.site.site_header = 'مدیریت وبسایت'
-admin.site.site_title = 'صفحه مدیریت'
-admin.site.index_title = 'EShopper'
-
 
 class UserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
@@ -30,10 +26,10 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('phone', 'email', 'full_name', 'password1', 'password2'),
+            'fields': ('email', 'phone', 'full_name', 'password1', 'password2'),
         }),
     )
-    search_fields = ('email', 'full_name')
+    search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
 

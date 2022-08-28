@@ -10,7 +10,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+    <link href="{% static "img/favicon.ico" %}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -21,10 +21,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static "lib/owlcarousel/assets/owl.carousel.min.css" %}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
 </head>
 
 <body>
@@ -95,7 +95,7 @@
 
 
 <!-- Navbar Start -->
-<div class="container-fluid mb-5">
+<div class="container-fluid">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
@@ -129,7 +129,7 @@
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="{% url 'home:main' %}" class="text-decoration-none d-block d-lg-none">
+                <a href="" class="text-decoration-none d-block d-lg-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
                             class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
@@ -151,7 +151,7 @@
                                 <a href="checkout.html" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="contact.html" class="nav-item nav-link active">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
                         <a href="{% url 'account:login' %}" class="nav-item nav-link
@@ -163,8 +163,10 @@
                 </div>
             </nav>
 
+
             {% block main %}
             {% endblock %}
+
 
             <!-- Footer Start -->
             <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
@@ -187,8 +189,7 @@
                             <div class="col-md-4 mb-5">
                                 <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                                 <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i
-                                            class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
                                     <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
                                         Shop</a>
                                     <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
@@ -204,8 +205,7 @@
                             <div class="col-md-4 mb-5">
                                 <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                                 <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i
-                                            class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
                                     <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
                                         Shop</a>
                                     <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
@@ -249,7 +249,7 @@
                         </p>
                     </div>
                     <div class="col-md-6 px-xl-0 text-center text-md-right">
-                        <img class="img-fluid" src="{% static 'img/payments.png' %}" alt="">
+                        <img class="img-fluid" src="{% static "img/payments.png" %}" alt="">
                     </div>
                 </div>
             </div>
@@ -263,15 +263,15 @@
             <!-- JavaScript Libraries -->
             <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-            <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-            <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+            <script src="{% static "lib/easing/easing.min.js" %}"></script>
+            <script src="{% static "lib/owlcarousel/owl.carousel.min.js" %}"></script>
 
             <!-- Contact Javascript File -->
-            <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script>
-            <script src="{% static 'mail/contact.js' %}"></script>
+            <script src="{% static "mail/jqBootstrapValidation.min.js" %}"></script>
+            <script src="{% static "mail/contact.js" %}"></script>
 
             <!-- Template Javascript -->
-            <script src="{% static 'js/main.js' %}"></script>
+            <script src="{% static "js/main.js" %}"></script>
 </body>
 
 </html>

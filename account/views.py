@@ -1,21 +1,23 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
 
-from .forms import LoginUserForm
+from .forms import LoginForm
 
 
-class LoginUserView(View):
+class LoginUser(View):
+    """
+    View to user login panel
+    """
 
     def get(self, request):
         if self.request.user.is_authenticated:
             return redirect('home:main')
-        form = LoginUserForm()
+        form = LoginForm()
         return render(request, 'account/login.html', {'form': form})
 
     def post(self, request):
-        form = LoginUserForm(request.POST)
-
+        form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(username=cd['phone'], password=cd['password'])
@@ -23,8 +25,8 @@ class LoginUserView(View):
                 login(request, user)
                 return redirect('home:main')
             else:
-                form.add_error('phone', 'No such user')
+                form.add_error('phone', 'Invalid user')
         else:
             form.add_error('phone', 'Invalid data')
 
-        return render(request, 'account/login.html', {'form': form})
+        return render(request, 'account/login.html', context={'form': form})
