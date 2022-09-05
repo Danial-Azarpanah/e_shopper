@@ -51,5 +51,13 @@ class LoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
                                                           'placeholder': 'Your Phone'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                          'placeholder': 'Your Password'}))
+                                                                 'placeholder': 'Your Password'}))
 
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if len(phone) > 11:
+            raise ValidationError(
+                'Invalid phone: %(value)s',
+                code='invalid_phone',
+                params={'value': f'{phone}'},
+            )
