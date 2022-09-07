@@ -6,6 +6,15 @@ from django.core import validators
 from .models import User
 
 
+def start_with_09(value):
+    """
+    Custom validator for phone number
+    to start with 09
+    """
+    if value[0:2] != "09":
+        raise forms.ValidationError("Phone number should start with 09")
+
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -50,7 +59,8 @@ class LoginForm(forms.Form):
     The form used for logging users in
     """
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                          'placeholder': 'Your Phone'}))
+                                                          'placeholder': 'Your Phone'}),
+                            validators=[start_with_09])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                  'placeholder': 'Your Password'}))
 
@@ -58,8 +68,8 @@ class LoginForm(forms.Form):
         phone = self.cleaned_data.get('phone')
         if len(phone) > 11:
             raise ValidationError(
-                'Invalid phone: %(value)s',
-                code='invalid_phone',
-                params={'value': f'{phone}'},
+                'Your phone number is longer than 11 digits! it is %(value)s',
+                'long_phone_number',
+                params={"value": f"{len(phone)}"}
             )
         return phone
