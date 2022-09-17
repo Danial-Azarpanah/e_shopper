@@ -2,7 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.views import View
 
-from .forms import LoginForm
+from random import randint
+
+from decouple import config
+import ghasedakpack
+
+from .forms import LoginForm, RegisterForm
+
+SMS = ghasedakpack.Ghasedak(config("SMS_API_KEY"))
 
 
 class LoginUser(View):
@@ -30,3 +37,28 @@ class LoginUser(View):
             form.add_error('phone', 'Invalid data')
 
         return render(request, 'account/login.html', context={'form': form})
+
+
+class RegisterView(View):
+    """
+    View for Registering new Users by phone number
+    and activating with random OTP code
+    """
+
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            return redirect("home:main")
+        form = RegisterForm()
+        return render(request, "account/register.html", {"form": form})
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            randcode = randint(1000, 9999)
+            cd = form.cleaned_data
+            SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
+        else:
+            form.add_error("phone", "Invalid data")
+
+        return render(request, "account/register.html", {"form": form})

@@ -73,3 +73,12 @@ class LoginForm(forms.Form):
                 params={"value": f"{len(phone)}"}
             )
         return phone
+
+
+class RegisterForm(forms.Form):
+    """
+    Form for registering users with phone number
+    """
+    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Phone",
+                                                          "class": "form-control"}),
+                            validators=[validators.MaxLengthValidator(11)])

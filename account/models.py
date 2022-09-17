@@ -41,3 +41,13 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class Otp(models.Model):
+    """
+    Model for activating new User accounts with phone number
+    by sending activation code
+    """
+    phone = models.CharField(max_length=11)
+    randcode = models.SmallIntegerField()
+    expiration_date = models.DateTimeField(auto_now_add=True)
