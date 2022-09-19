@@ -158,7 +158,8 @@
                         {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
                             Login
                         </a>
-                        <a href="" class="nav-item nav-link">Register</a>
+                        <a href="{% url 'account:register' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}">Register</a>
                     </div>
                 </div>
             </nav>
@@ -189,7 +190,8 @@
                             <div class="col-md-4 mb-5">
                                 <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                                 <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i
+                                            class="fa fa-angle-right mr-2"></i>Home</a>
                                     <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
                                         Shop</a>
                                     <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
@@ -205,7 +207,8 @@
                             <div class="col-md-4 mb-5">
                                 <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                                 <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-dark mb-2" href="{% url 'home:main' %}"><i
+                                            class="fa fa-angle-right mr-2"></i>Home</a>
                                     <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
                                         Shop</a>
                                     <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop

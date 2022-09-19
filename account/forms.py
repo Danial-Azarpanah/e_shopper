@@ -82,3 +82,12 @@ class RegisterForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Phone",
                                                           "class": "form-control"}),
                             validators=[validators.MaxLengthValidator(11)])
+
+
+class CheckOtpForm(forms.Form):
+    """
+    Form for checking the code user enters
+    with the code sent
+    """
+    code = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "4 digit code",
+                                                         "class": "form-control"}))

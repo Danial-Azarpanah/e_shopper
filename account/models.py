@@ -49,5 +49,8 @@ class Otp(models.Model):
     by sending activation code
     """
     phone = models.CharField(max_length=11)
-    randcode = models.SmallIntegerField()
+    code = models.SmallIntegerField()
     expiration_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.phone
