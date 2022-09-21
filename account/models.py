@@ -48,6 +48,7 @@ class Otp(models.Model):
     Model for activating new User accounts with phone number
     by sending activation code
     """
+    token = models.CharField(max_length=200, null=True)
     phone = models.CharField(max_length=11)
     code = models.SmallIntegerField()
     expiration_date = models.DateTimeField(auto_now_add=True)

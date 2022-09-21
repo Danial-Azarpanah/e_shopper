@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.utils.crypto import get_random_string
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -61,10 +62,12 @@ class RegisterView(View):
             cd = form.cleaned_data
             # Send otp code to user
             SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
-            Otp.objects.create(phone=cd["phone"], code=randcode)
+            # Token for registration with phone number. (display otp token instead of phone number for more safety)
+            token = get_random_string(length=100)
+            Otp.objects.create(phone=cd["phone"], code=randcode, token=token)
             print(randcode)
-            # Get the phone number in CheckOtp view
-            return redirect(reverse("account:check_otp") + f"?phone={cd['phone']}")
+            # Get the token in CheckOtp view
+            return redirect(reverse("account:check_otp") + f"?token={token}")
         else:
             form.add_error("phone", "Invalid data")
 
@@ -84,13 +87,14 @@ class CheckOtpView(View):
         return render(request, "account/check_otp.html", {"form": form})
 
     def post(self, request):
-        phone = request.GET.get("phone")
+        token = request.GET.get("token")
         form = CheckOtpForm(request.POST)
 
         if form.is_valid():
             cd = form.cleaned_data
-            if Otp.objects.filter(code=cd["code"], phone=phone).exists():
-                user = User.objects.create(phone=phone)
+            if Otp.objects.filter(code=cd["code"], token=token).exists():
+                otp = Otp.objects.get(token=token)
+                user = User.objects.create(phone=otp.phone)
                 login(request, user)
                 return redirect("home:main")
         else:
