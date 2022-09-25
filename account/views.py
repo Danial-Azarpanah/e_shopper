@@ -7,6 +7,7 @@ from django.views import View
 from random import randint
 
 from decouple import config
+from uuid import uuid4
 import ghasedakpack
 
 from .forms import LoginForm, RegisterForm, CheckOtpForm
@@ -42,7 +43,7 @@ class LoginUser(View):
         return render(request, 'account/login.html', context={'form': form})
 
 
-class RegisterView(View):
+class OtpLoginView(View):
     """
     View for Registering new Users by phone number
     and activating with random OTP code
@@ -52,7 +53,7 @@ class RegisterView(View):
         if self.request.user.is_authenticated:
             return redirect("home:main")
         form = RegisterForm()
-        return render(request, "account/register.html", {"form": form})
+        return render(request, "account/otp_login.html", {"form": form})
 
     def post(self, request):
         form = RegisterForm(request.POST)
@@ -63,7 +64,7 @@ class RegisterView(View):
             # Send otp code to user
             SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
             # Token for registration with phone number. (display otp token instead of phone number for more safety)
-            token = get_random_string(length=100)
+            token = str(uuid4())
             Otp.objects.create(phone=cd["phone"], code=randcode, token=token)
             print(randcode)
             # Get the token in CheckOtp view
@@ -71,7 +72,7 @@ class RegisterView(View):
         else:
             form.add_error("phone", "Invalid data")
 
-        return render(request, "account/register.html", {"form": form})
+        return render(request, "account/otp_login.html", {"form": form})
 
 
 class CheckOtpView(View):
@@ -94,8 +95,9 @@ class CheckOtpView(View):
             cd = form.cleaned_data
             if Otp.objects.filter(code=cd["code"], token=token).exists():
                 otp = Otp.objects.get(token=token)
-                user = User.objects.create(phone=otp.phone)
+                user, is_created= User.objects.get_or_create(phone=otp.phone)
                 login(request, user)
+                otp.delete()
                 return redirect("home:main")
         else:
             form.add_error("phone", "Invalid data")
