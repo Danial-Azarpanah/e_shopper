@@ -31,14 +31,14 @@ class LoginUser(View):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(username=cd['phone'], password=cd['password'])
+            user = authenticate(username=cd['username'], password=cd['password'])
             if user is not None:
                 login(request, user)
                 return redirect('home:main')
             else:
-                form.add_error('phone', 'Invalid user')
+                form.add_error('username', 'Invalid user')
         else:
-            form.add_error('phone', 'Invalid data')
+            form.add_error('username', 'Invalid data')
 
         return render(request, 'account/login.html', context={'form': form})
 
@@ -65,12 +65,12 @@ class OtpLoginView(View):
             SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
             # Token for registration with phone number. (display otp token instead of phone number for more safety)
             token = str(uuid4())
-            Otp.objects.create(phone=cd["phone"], code=randcode, token=token)
+            Otp.objects.create(phone=cd["username"], code=randcode, token=token)
             print(randcode)
             # Get the token in CheckOtp view
             return redirect(reverse("account:check_otp") + f"?token={token}")
         else:
-            form.add_error("phone", "Invalid data")
+            form.add_error("username", "Invalid data")
 
         return render(request, "account/otp_login.html", {"form": form})
 
@@ -95,11 +95,11 @@ class CheckOtpView(View):
             cd = form.cleaned_data
             if Otp.objects.filter(code=cd["code"], token=token).exists():
                 otp = Otp.objects.get(token=token)
-                user, is_created= User.objects.get_or_create(phone=otp.phone)
+                user, is_created = User.objects.get_or_create(phone=otp.phone)
                 login(request, user)
                 otp.delete()
                 return redirect("home:main")
         else:
-            form.add_error("phone", "Invalid data")
+            form.add_error("username", "Invalid data")
 
         return render(request, "account/check_otp.html", {"form": form})

@@ -6,13 +6,13 @@ from django.core import validators
 from .models import User
 
 
-def start_with_09(value):
-    """
-    Custom validator for phone number
-    to start with 09
-    """
-    if value[0:2] != "09":
-        raise forms.ValidationError("Phone number should start with 09")
+# def start_with_09(value):
+#     """
+#     Custom validator for phone number
+#     to start with 09
+#     """
+#     if value[0:2] != "09":
+#         raise forms.ValidationError("Phone number should start with 09")
 
 
 class UserCreationForm(forms.ModelForm):
@@ -58,30 +58,29 @@ class LoginForm(forms.Form):
     """
     The form used for logging users in
     """
-    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                          'placeholder': 'Your Phone'}),
-                            validators=[start_with_09])
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+                                                          'placeholder': 'Your Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                  'placeholder': 'Your Password'}))
 
     def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
-        if len(phone) > 11:
+        username = self.cleaned_data.get('username')
+        if len(username) > 100:
             raise ValidationError(
-                'Your phone number is longer than 11 digits! it is %(value)s',
-                'long_phone_number',
-                params={"value": f"{len(phone)}"}
+                'Your username is longer than 100 characters! it is %(value)s',
+                'long_username',
+                params={"value": f"{len(username)}"}
             )
-        return phone
+        return username
 
 
 class RegisterForm(forms.Form):
     """
     Form for registering users with phone number
     """
-    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Phone",
+    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Username",
                                                           "class": "form-control"}),
-                            validators=[validators.MaxLengthValidator(11)])
+                            validators=[validators.MaxLengthValidator(100)])
 
 
 class CheckOtpForm(forms.Form):
