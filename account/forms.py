@@ -59,11 +59,11 @@ class LoginForm(forms.Form):
     The form used for logging users in
     """
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
-                                                          'placeholder': 'Your Username'}))
+                                                             'placeholder': 'Your Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                  'placeholder': 'Your Password'}))
 
-    def clean_phone(self):
+    def clean_username(self):
         username = self.cleaned_data.get('username')
         if len(username) > 100:
             raise ValidationError(
@@ -74,13 +74,23 @@ class LoginForm(forms.Form):
         return username
 
 
-class RegisterForm(forms.Form):
+class OtpLoginForm(forms.Form):
     """
     Form for registering users with phone number
     """
-    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Username",
+    phone = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Your Username",
                                                           "class": "form-control"}),
                             validators=[validators.MaxLengthValidator(100)])
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if len(username) > 100:
+            raise ValidationError(
+                'Your username is longer than 100 characters! it is %(value)s',
+                'long_username',
+                params={"value": f"{len(username)}"}
+            )
+        return username
 
 
 class CheckOtpForm(forms.Form):

@@ -10,7 +10,7 @@ from decouple import config
 from uuid import uuid4
 import ghasedakpack
 
-from .forms import LoginForm, RegisterForm, CheckOtpForm
+from .forms import LoginForm, OtpLoginForm, CheckOtpForm
 from .models import Otp, User
 
 SMS = ghasedakpack.Ghasedak(config("SMS_API_KEY"))
@@ -52,25 +52,25 @@ class OtpLoginView(View):
     def get(self, request):
         if self.request.user.is_authenticated:
             return redirect("home:main")
-        form = RegisterForm()
+        form = OtpLoginForm()
         return render(request, "account/otp_login.html", {"form": form})
 
     def post(self, request):
-        form = RegisterForm(request.POST)
+        form = OtpLoginForm(request.POST)
 
         if form.is_valid():
             randcode = randint(1000, 9999)
             cd = form.cleaned_data
             # Send otp code to user
-            SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
+            # SMS.verification({'receptor': cd.get("phone"), 'type': '1', 'template': 'randcode', 'param1': randcode})
             # Token for registration with phone number. (display otp token instead of phone number for more safety)
             token = str(uuid4())
-            Otp.objects.create(phone=cd["username"], code=randcode, token=token)
+            Otp.objects.create(phone=cd["phone"], code=randcode, token=token)
             print(randcode)
             # Get the token in CheckOtp view
             return redirect(reverse("account:check_otp") + f"?token={token}")
         else:
-            form.add_error("username", "Invalid data")
+            form.add_error("phone", "Invalid data")
 
         return render(request, "account/otp_login.html", {"form": form})
 
