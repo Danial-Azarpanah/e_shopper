@@ -82,16 +82,6 @@ class OtpLoginForm(forms.Form):
                                                           "class": "form-control"}),
                             validators=[validators.MaxLengthValidator(100)])
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if len(username) > 100:
-            raise ValidationError(
-                'Your username is longer than 100 characters! it is %(value)s',
-                'long_username',
-                params={"value": f"{len(username)}"}
-            )
-        return username
-
 
 class CheckOtpForm(forms.Form):
     """

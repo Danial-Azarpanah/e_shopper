@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.utils.crypto import get_random_string
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -103,3 +103,8 @@ class CheckOtpView(View):
             form.add_error("username", "Invalid data")
 
         return render(request, "account/check_otp.html", {"form": form})
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("home:main")
